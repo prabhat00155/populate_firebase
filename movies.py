@@ -1,5 +1,6 @@
 from tmdbv3api import TMDb
 from tmdbv3api import Movie
+import requests
 
 
 country_code = {
@@ -32,6 +33,8 @@ def fetch(movies):
     current['url'] = f'{URL_BASE}{WIDTH}/{details.poster_path}'
     current['overview'] = details.overview
     current['release_date'] = details.release_date
+    current['vote_average'] = details.vote_average
+    current['vote_count'] = details.vote_count
     current['locations'] = locations
     current['language'] = details.original_language
 
@@ -54,6 +57,27 @@ def fetch(movies):
     casts = other_details.casts.cast
     current['casts' ] = list(map(lambda x: {'name': x.get('name'), 'character': x.get('character'), 'photo': f'{PROVIDER_BASE}{x.get("profile_path")}'}, casts)) if casts else None 
     current['genres' ] = list(map(lambda x: x.get('name'), other_details.genres))
+
+    # Fetch trailer URL
+    url = f"https://api.themoviedb.org/3/movie/{details.get('id')}/videos"
+    params = {
+        "api_key": tmdb.api_key,
+    }
+    response = requests.get(url, params=params)
+    trailer_url = None
+    if response.status_code == 200:
+        data = response.json()
+        results = data.get("results", [])
+
+        # Find the trailer URL
+        for result in results:
+            if result.get("type") == "Trailer":
+                trailer_url = f"https://www.youtube.com/watch?v={result.get('key')}"
+                break
+
+        if not trailer_url:
+            print(f"No trailer found for the movie: {movie_name}")
+    current['trailer_url'] = trailer_url
 
     movie_list.append(current)
 
