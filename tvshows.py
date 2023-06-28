@@ -36,10 +36,6 @@ def fetch(tvshows):
     current['origin_country'] = details.origin_country
     current['language'] = details.original_language
     current['locations'] = locations 
-    #casting = [] 
-    #for cast in tv_show.credits(details['id'])['cast'][:4]:
-    #  casting.append(cast.get('name'))
-    #current['casts'] = casting
 
     current['buy'] = {} 
     current['rent'] = {} 
