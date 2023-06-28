@@ -26,6 +26,11 @@ def fetch(books):
         current['thumbnail'] = book['volumeInfo'].get('imageLinks').get('thumbnail')
         current['language'] = book['volumeInfo'].get('language')
         current['description'] = book['volumeInfo'].get('description')
+        current['averageRating'] = book['volumeInfo'].get('averageRating')
+        current['ratingCount'] = book['volumeInfo'].get('ratingCount')
+        current['maturityRating'] = book['volumeInfo'].get('maturityRating')
+        current['previewLink'] = book['volumeInfo'].get('previewLink')
+        current['infoLink'] = book['volumeInfo'].get('canonicalVolumeLink') if book['volumeInfo'].get('canonicalVolumeLink') else book['volumeInfo'].get('infoLink')
         current['locations'] = locations 
         book_list.append(current)
   return book_list
