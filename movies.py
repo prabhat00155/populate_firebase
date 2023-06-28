@@ -1,6 +1,7 @@
+import requests
+
 from tmdbv3api import TMDb
 from tmdbv3api import Movie
-import requests
 
 
 country_code = {
